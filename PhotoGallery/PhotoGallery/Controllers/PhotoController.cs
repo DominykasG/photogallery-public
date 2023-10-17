@@ -58,6 +58,7 @@ namespace PhotoGallery.Controllers
         }
         [HttpPost]
         [Route("post")]
+        [Authorize(Roles = UserRoles.User)]
         public async Task<ActionResult<PhotoDTO>> AddPhoto(PhotoDTO photoDto)
         {
             var user = _photoGallerDbContext.Users.FirstOrDefault(x => x.Username == User.Identity.Name);
