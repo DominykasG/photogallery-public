@@ -44,7 +44,7 @@ namespace PhotoGallery.Controllers
         public async Task<ICollection<Photo>> GetUserPhotos(string username) 
         {
             var user = _photoGallerDbContext.Users.FirstOrDefault(x => x.Username == username);
-            if(user == null) return (ICollection<Photo>)NotFound($"User with username: '{username}' not found.");
+            if(user == null) return (ICollection<Photo>)NotFound($"User not found.");
             return await _photoRepository.GetUserPhotos(user);
         }
         [HttpGet("{id}/comments")]
@@ -62,7 +62,7 @@ namespace PhotoGallery.Controllers
         public async Task<ActionResult<PhotoDTO>> AddPhoto(PhotoDTO photoDto)
         {
             var user = _photoGallerDbContext.Users.FirstOrDefault(x => x.Username == User.Identity.Name);
-            if (user == null) return NotFound($"User with username: '{user.Username}' not found.");
+            if (user == null) return NotFound($"User not found.");
             var photo = new Photo { Category = photoDto.Category, Url = photoDto.Url, User = user, UserId = user.AspNetUserId, CreateAt = DateTime.Now};
             await _photoRepository.Add(photo);
             return Created($"/api/photos/{photo.Id}", photo);

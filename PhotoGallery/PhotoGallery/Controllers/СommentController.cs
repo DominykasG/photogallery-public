@@ -48,6 +48,7 @@ namespace PhotoGallery.Controllers
             var photo = _photoGallerDbContext.Photos.FirstOrDefault(x => x.Id == commentDTO.PhotoId);
 
             if (photo == null) return NotFound($"Photo  with id '{commentDTO.PhotoId}' not found.");   
+            if (user == null) return NotFound("User was not found.");
 
             var comment = new Comment { Content = commentDTO.Content, Photo = photo, PhotoId = commentDTO.PhotoId, User = user, UserId = user.AspNetUserId};
 

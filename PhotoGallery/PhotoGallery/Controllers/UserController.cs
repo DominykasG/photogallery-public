@@ -43,14 +43,16 @@ namespace PhotoGallery.Controllers
         public async Task<ActionResult<User>> UpdateUser(string username, UserDTO user)
         {
             var userUp = await _userRepository.Get(username);
+            if (userUp == null) return NotFound($"User with username '{username}' not found.");
+
             var id = User.Claims.First(x => x.Type == "userId").Value;
 
             if (userUp.AspNetUserId != id)
             {
                 return Forbid();
             }
-            if (userUp == null) return NotFound($"User with username '{username}' not found.");
             await _userRepository.Update(userUp, user);
+
             return Ok(user);
         }
         [HttpGet("search")]
